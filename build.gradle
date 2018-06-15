@@ -2,10 +2,13 @@ buildscript {
     ext {
         springBootVersion = '2.0.0.RELEASE'
     }
+    //repositories {
+    //    maven {
+    //        url 'https://repo.sits.avaloq.net/artifactory/virtual-m2-development/'
+    //    }
+    //}
     repositories {
-        maven {
-            url 'https://repo.sits.avaloq.net/artifactory/virtual-m2-development/'
-        }
+        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -22,11 +25,15 @@ apply plugin: 'io.spring.dependency-management'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+//repositories {
+//    maven {
+//        url 'https://artifactory.sits.avaloq.net/artifactory/avaloq-private/'
+//    }
+//}
 repositories {
-    maven {
-        url 'https://artifactory.sits.avaloq.net/artifactory/avaloq-private/'
-    }
+    jcenter()
 }
+
 
 configurations {
     all*.exclude module: 'spring-boot-starter-logging'

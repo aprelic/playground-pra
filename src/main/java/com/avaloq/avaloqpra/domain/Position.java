@@ -10,16 +10,9 @@
 
 package com.avaloq.avaloqpra.domain;
 
+import java.time.LocalDate;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -27,78 +20,113 @@ import javax.validation.constraints.Size;
 //@Table(name = "PRA_ECL_POS")
 public class Position {
 
-  @Id
-  @NotNull
-  @GeneratedValue
-  //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pra_ecl_pos_seq") // sequence must manually generated
-  //@SequenceGenerator(name = "pra_ecl_pos_seq", sequenceName = "pra_ecl_pos_seq", allocationSize = 100) // dflt value is 50
-  private Long id;
+    @Id
+    @NotNull
+    @GeneratedValue
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pra_ecl_pos_seq") // sequence must manually generated
+    //@SequenceGenerator(name = "pra_ecl_pos_seq", sequenceName = "pra_ecl_pos_seq", allocationSize = 100) // dflt value is 50
+    private Long id;
 
-  @NotNull
-  //@Column(name = "avq_key")
-  private Long avaloqKey;
+    @NotNull
+    //@Column(name = "avq_key")
+    private Long avaloqKey;
 
-  @NotNull
-  @Size(max = 500)
-  private String name;
+    @NotNull
+    @Size(max = 500)
+    private String name;
 
-  @NotNull
-  @ManyToOne//(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-  //@JoinColumn(name = "cntprty_id")
-  private Counterparty counterparty;
+    private LocalDate maturityDate;
 
-  protected Position() { // JPA
-  }
+    @NotNull
+    @Size(max = 3)
+    private String currencyCode;
 
-  public Position(
-      @NotNull Long avaloqKey,
-      @NotNull @Size(max = 500) String name,
-      @NotNull Counterparty counterparty) {
-    this.avaloqKey = avaloqKey;
-    this.name = name;
-    this.counterparty = counterparty;
-  }
+    // not really sure we want to use these @Enumerated,
+    // one cannot use FK's to ensure only correct values ae used
+    // columns take more space
+    // more effort for migrations, values in the database mst be kept in sync with the code
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private ImpairmentStage impairmentStage;
 
-  @Override
-  public String toString() {
-    return "Position{" +
-        "id=" + id +
-        ", avaloqKey=" + avaloqKey +
-        ", name='" + name + '\'' +
-        ", counterparty=" + counterparty +
-        '}';
-  }
+    @NotNull
+    @ManyToOne//(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "counterparty_id")
+    private Counterparty counterparty;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    protected Position() { // JPA
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    public Position(
+            @NotNull Long avaloqKey,
+            @NotNull @Size(max = 500) String name,
+            @NotNull @Size(max = 3) String currencyCode,
+            LocalDate maturityDate,
+            @NotNull ImpairmentStage impairmentStage,
+            @NotNull Counterparty counterparty) {
+        this.avaloqKey = avaloqKey;
+        this.name = name;
+        this.maturityDate = maturityDate;
+        this.currencyCode = currencyCode;
+        this.impairmentStage = impairmentStage;
+        this.counterparty = counterparty;
     }
-    Position position = (Position) o;
-    return Objects.equals(avaloqKey, position.avaloqKey); // && Objects.equals(counterparty.getAvaloqKey(), position.counterparty.getAvaloqKey())?
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(avaloqKey); // , counterparty.getAvaloqKey());
-  }
+    @Override
+    public String toString() {
+        return "Position{" +
+                "id=" + id +
+                ", avaloqKey=" + avaloqKey +
+                ", name='" + name + '\'' +
+                ", maturityDate=" + maturityDate +
+                ", currencyCode=" + currencyCode +
+                ", impairmentStage=" + impairmentStage +
+                ", counterparty=" + counterparty +
+                '}';
+    }
 
-  public Long getId() {
-    return id;
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Position position = (Position) o;
+        return Objects.equals(avaloqKey, position.avaloqKey); // && Objects.equals(counterparty.getAvaloqKey(), position.counterparty.getAvaloqKey())?
+    }
 
-  public Long getAvaloqKey() {
-    return avaloqKey;
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(avaloqKey); // , counterparty.getAvaloqKey());
+    }
 
-  public String getName() {
-    return name;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public Counterparty getCounterparty() {
-    return counterparty;
-  }
+    public Long getAvaloqKey() {
+        return avaloqKey;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Counterparty getCounterparty() {
+        return counterparty;
+    }
+
+    public LocalDate getMaturityDate() {
+        return maturityDate;
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public ImpairmentStage getImpairmentStage() {
+        return impairmentStage;
+    }
 }

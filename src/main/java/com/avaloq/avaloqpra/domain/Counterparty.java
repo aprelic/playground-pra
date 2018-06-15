@@ -28,81 +28,77 @@ import javax.validation.constraints.Size;
 //@Table(name = "PRA_ECL_CNTPRTY")
 public class Counterparty {
 
-  @Id
-  @NotNull
-  @GeneratedValue
-  //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pra_ecl_cntprty_seq") // sequence must manually generated
-  //@SequenceGenerator(name = "pra_ecl_cntprty_seq", sequenceName = "pra_ecl_cntprty_seq", allocationSize = 100) // dflt value is 50
-  private Long id;
+    @OneToMany
+    @JoinColumn(name = "counterparty_id", referencedColumnName = "id")
+    List<Position> positions;
+    @Id
+    @NotNull
+    @GeneratedValue
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pra_ecl_cntprty_seq") // sequence must manually generated
+    //@SequenceGenerator(name = "pra_ecl_cntprty_seq", sequenceName = "pra_ecl_cntprty_seq", allocationSize = 100) // dflt value is 50
+    private Long id;
+    @NotNull
+    //@Column(name = "avq_key")
+    private Long avaloqKey;
+    @NotNull
+    @Size(max = 100)
+    //@Column(name = "sym_key")
+    private String symbolicKey;
+    @NotNull
+    @Size(max = 500)
+    private String name;
 
-  @NotNull
-  //@Column(name = "avq_key")
-  private Long avaloqKey;
-
-  @NotNull
-  @Size(max = 100)
-  //@Column(name = "sym_key")
-  private String symbolicKey;
-
-  @NotNull
-  @Size(max = 500)
-  private String name;
-
-  //@OneToMany
-  //@JoinColumn(name = "cnptrty_id", referencedColumnName = "id")
-  //List<Position> positions;
-
-  protected Counterparty() { // JPA
-  }
-
-  public Counterparty(@NotNull Long avaloqKey,
-      @NotNull @Size(max = 100) String symbolicKey,
-      @NotNull @Size(max = 500) String name) {
-    this.avaloqKey = avaloqKey;
-    this.symbolicKey = symbolicKey;
-    this.name = name;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    protected Counterparty() { // JPA
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    public Counterparty(@NotNull Long avaloqKey,
+                        @NotNull @Size(max = 100) String symbolicKey,
+                        @NotNull @Size(max = 500) String name) {
+        this.avaloqKey = avaloqKey;
+        this.symbolicKey = symbolicKey;
+        this.name = name;
     }
-    Counterparty that = (Counterparty) o;
-    return Objects.equals(avaloqKey, that.avaloqKey);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(avaloqKey);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Counterparty that = (Counterparty) o;
+        return Objects.equals(avaloqKey, that.avaloqKey);
+    }
 
-  @Override
-  public String toString() {
-    return "Counterparty{" +
-        "id=" + id +
-        ", avaloqKey=" + avaloqKey +
-        ", symbolicKey='" + symbolicKey + '\'' +
-        ", name='" + name + '\'' +
-        '}';
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(avaloqKey);
+    }
 
-  public Long getId() {
-    return id;
-  }
+    @Override
+    public String toString() {
+        return "Counterparty{" +
+                "id=" + id +
+                ", avaloqKey=" + avaloqKey +
+                ", symbolicKey='" + symbolicKey + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
-  public Long getAvaloqKey() {
-    return avaloqKey;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public String getSymbolicKey() {
-    return symbolicKey;
-  }
+    public Long getAvaloqKey() {
+        return avaloqKey;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getSymbolicKey() {
+        return symbolicKey;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

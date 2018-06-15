@@ -12,14 +12,19 @@ package com.avaloq.avaloqpra.repository;
 
 import com.avaloq.avaloqpra.domain.Counterparty;
 import com.avaloq.avaloqpra.domain.Position;
+
 import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PositionRepository extends JpaRepository<Position, Long> {
 
-  List<Position> findByCounterparty(Counterparty counterparty);
+    List<Position> findByCounterparty(Counterparty counterparty);
 
-  List<Position> findByAvaloqKey(Long avaloqKey);
+    // nested properties example
+    List<Position> findByCounterpartyAvaloqKey(Long counterpartyAvaloqKey);
 
-  Integer countDistinctByCounterparty(Counterparty counterparty);
+    List<Position> findByAvaloqKey(Long avaloqKey);
+
+    Integer countDistinctByCounterparty(Counterparty counterparty);
 }
