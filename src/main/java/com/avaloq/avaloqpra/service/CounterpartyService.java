@@ -8,15 +8,15 @@ import java.util.List;
 
 public class CounterpartyService {
 
-    private final CounterpartyRepository counterpartyRepository;
+  private final CounterpartyRepository counterpartyRepository;
 
-    @Autowired
-    public CounterpartyService(CounterpartyRepository counterpartyRepository) {
-        this.counterpartyRepository = counterpartyRepository;
-    }
+  @Autowired
+  public CounterpartyService(CounterpartyRepository counterpartyRepository) {
+    this.counterpartyRepository = counterpartyRepository;
+  }
 
-    public List<Counterparty> findCounterpartyByAvaloqKey(Long key) {
-        return counterpartyRepository.findByAvaloqKey(key);
-    }
+  public List<Counterparty> findCounterpartyByAvaloqKey(Long key) {
+    return counterpartyRepository.findByAvaloqKey(key);
+  }
 
 }

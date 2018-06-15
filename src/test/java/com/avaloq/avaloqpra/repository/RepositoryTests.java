@@ -31,61 +31,64 @@ import java.time.Month;
 @SpringBootTest
 public class RepositoryTests {
 
-    @Autowired
-    CounterpartyRepository counterpartyRepository;
+  @Autowired
+  private CounterpartyRepository counterpartyRepository;
 
-    @Autowired
-    PositionRepository positionRepository;
-    @Autowired
-    EntityManager em;
+  @Autowired
+  private PositionRepository positionRepository;
 
-    @Test
-    public void shouldSaveCounterpartyAndPosition() {
-        Counterparty counterparty = new Counterparty(100L, "CNTPRTY.100", "Counterparty 100");
+  @Autowired
+  private EntityManager em;
 
-        counterpartyRepository.save(counterparty);
-        assertThat(counterpartyRepository.findByAvaloqKey(100L).get(0).getName())
-                .isEqualTo("Counterparty 100");
-        assertThat(counterpartyRepository.findBySymbolicKey("CNTPRTY.100").get(0).getName())
-                .isEqualTo("Counterparty 100");
-        assertThat(counterpartyRepository.findByName("Counterparty 100").get(0).getName())
-                .isEqualTo("Counterparty 100");
+  @Test
+  public void shouldSaveCounterpartyAndPosition() {
+    Counterparty counterparty = new Counterparty(100L, "CNTPRTY.100", "Counterparty 100");
 
-        Position position = new Position(200L, "Position 200 in 100", "CHF", LocalDate.of(2030, Month.APRIL, 10), ImpairmentStage.STAGE_1, counterparty);
-        positionRepository.save(position);
-        assertThat(positionRepository.findByAvaloqKey(200L).get(0).getName())
-                .isEqualTo("Position 200 in 100");
+    counterpartyRepository.save(counterparty);
+    assertThat(counterpartyRepository.findByAvaloqKey(100L).get(0).getName())
+        .isEqualTo("Counterparty 100");
+    assertThat(counterpartyRepository.findBySymbolicKey("CNTPRTY.100").get(0).getName())
+        .isEqualTo("Counterparty 100");
+    assertThat(counterpartyRepository.findByName("Counterparty 100").get(0).getName())
+        .isEqualTo("Counterparty 100");
 
-        Position anotherPosition = new Position(201L, "Position 201 in 100", "EUR", LocalDate.of(2020, Month.JANUARY, 31), ImpairmentStage.STAGE_1, counterparty);
-        positionRepository.save(anotherPosition);
-        assertThat(positionRepository.findByCounterparty(counterparty).size()).isEqualTo(2);
+    Position position = new Position(200L, "Position 200 in 100", "CHF",
+        LocalDate.of(2030, Month.APRIL, 10), ImpairmentStage.STAGE_1, counterparty);
+    positionRepository.save(position);
+    assertThat(positionRepository.findByAvaloqKey(200L).get(0).getName())
+        .isEqualTo("Position 200 in 100");
 
-        assertThat(positionRepository.countDistinctByCounterparty(counterparty)).isEqualTo(2);
-    }
+    Position anotherPosition = new Position(201L, "Position 201 in 100", "EUR",
+        LocalDate.of(2020, Month.JANUARY, 31), ImpairmentStage.STAGE_1, counterparty);
+    positionRepository.save(anotherPosition);
+    assertThat(positionRepository.findByCounterparty(counterparty).size()).isEqualTo(2);
 
-    @Test
-    public void shouldTestEqualityBasedOnNaturalId() {
-        Counterparty counterparty = new Counterparty(300L,
-                "CNPRTY_300",
-                "Test counterparty 300");
-        Position position = new Position(301L,
-                "Test position 301",
-                "CHF",
-                LocalDate.of(2019, Month.NOVEMBER, 12),
-                ImpairmentStage.STAGE_1,
-                counterparty);
-        counterpartyRepository.save(counterparty);
-        positionRepository.save(position);
-        Long id = position.getId();
+    assertThat(positionRepository.countDistinctByCounterparty(counterparty)).isEqualTo(2);
+  }
 
-        // row fetched twice result in identical Java object, when in the same session, which are identical
-        Position position1 = em.find(Position.class, id);
-        Position position2 = em.find(Position.class, id);
-        assertThat(position1.equals(position2));
+  @Test
+  public void shouldTestEqualityBasedOnNaturalId() {
+    Counterparty counterparty = new Counterparty(300L,
+        "CNPRTY_300",
+        "Test counterparty 300");
+    Position position = new Position(301L,
+        "Test position 301",
+        "CHF",
+        LocalDate.of(2019, Month.NOVEMBER, 12),
+        ImpairmentStage.STAGE_1,
+        counterparty);
+    counterpartyRepository.save(counterparty);
+    positionRepository.save(position);
+    Long id = position.getId();
 
-        // row fetched twice result in different Java objects, when in different sessions => make sure to implement equals() for business-aware equality
-        //Position position3 = doInJPA(emf, entityManager -> { return entityManager.find(Position.class, id); });
-        //Position position4 = doInJPA(emf, entityManager -> { return entityManager.find(Position.class, id); });
-        //assertThat(position3.equals(position4));
-    }
+    // row fetched twice result in identical Java object, when in the same session, which are identical
+    Position position1 = em.find(Position.class, id);
+    Position position2 = em.find(Position.class, id);
+    assertThat(position1.equals(position2));
+
+    // row fetched twice result in different Java objects, when in different sessions => make sure to implement equals() for business-aware equality
+    //Position position3 = doInJPA(emf, entityManager -> { return entityManager.find(Position.class, id); });
+    //Position position4 = doInJPA(emf, entityManager -> { return entityManager.find(Position.class, id); });
+    //assertThat(position3.equals(position4));
+  }
 }

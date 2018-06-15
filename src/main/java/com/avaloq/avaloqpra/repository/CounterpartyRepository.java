@@ -18,9 +18,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CounterpartyRepository extends JpaRepository<Counterparty, Long> {
 
-    List<Counterparty> findByAvaloqKey(Long avaloqKey);
+  List<Counterparty> findByAvaloqKey(Long avaloqKey);
 
-    List<Counterparty> findBySymbolicKey(String symbolicKey);
+  List<Counterparty> findBySymbolicKey(String symbolicKey);
 
-    List<Counterparty> findByName(String name);
+  List<Counterparty> findByName(String name);
 }

@@ -20,113 +20,114 @@ import javax.validation.constraints.Size;
 //@Table(name = "PRA_ECL_POS")
 public class Position {
 
-    @Id
-    @NotNull
-    @GeneratedValue
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pra_ecl_pos_seq") // sequence must manually generated
-    //@SequenceGenerator(name = "pra_ecl_pos_seq", sequenceName = "pra_ecl_pos_seq", allocationSize = 100) // dflt value is 50
-    private Long id;
+  @Id
+  @NotNull
+  @GeneratedValue
+  //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pra_ecl_pos_seq") // sequence must manually generated
+  //@SequenceGenerator(name = "pra_ecl_pos_seq", sequenceName = "pra_ecl_pos_seq", allocationSize = 100) // dflt value is 50
+  private Long id;
 
-    @NotNull
-    //@Column(name = "avq_key")
-    private Long avaloqKey;
+  @NotNull
+  //@Column(name = "avq_key")
+  private Long avaloqKey;
 
-    @NotNull
-    @Size(max = 500)
-    private String name;
+  @NotNull
+  @Size(max = 500)
+  private String name;
 
-    private LocalDate maturityDate;
+  private LocalDate maturityDate;
 
-    @NotNull
-    @Size(max = 3)
-    private String currencyCode;
+  @NotNull
+  @Size(max = 3)
+  private String currencyCode;
 
-    // not really sure we want to use these @Enumerated,
-    // one cannot use FK's to ensure only correct values ae used
-    // columns take more space
-    // more effort for migrations, values in the database mst be kept in sync with the code
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private ImpairmentStage impairmentStage;
+  // not really sure we want to use these @Enumerated,
+  // one cannot use FK's to ensure only correct values ae used
+  // columns take more space
+  // more effort for migrations, values in the database mst be kept in sync with the code
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private ImpairmentStage impairmentStage;
 
-    @NotNull
-    @ManyToOne//(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "counterparty_id")
-    private Counterparty counterparty;
+  @NotNull
+  @ManyToOne//(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+  @JoinColumn(name = "counterparty_id")
+  private Counterparty counterparty;
 
-    protected Position() { // JPA
+  protected Position() { // JPA
+  }
+
+  public Position(
+      @NotNull Long avaloqKey,
+      @NotNull @Size(max = 500) String name,
+      @NotNull @Size(max = 3) String currencyCode,
+      LocalDate maturityDate,
+      @NotNull ImpairmentStage impairmentStage,
+      @NotNull Counterparty counterparty) {
+    this.avaloqKey = avaloqKey;
+    this.name = name;
+    this.maturityDate = maturityDate;
+    this.currencyCode = currencyCode;
+    this.impairmentStage = impairmentStage;
+    this.counterparty = counterparty;
+  }
+
+  @Override
+  public String toString() {
+    return "Position{" +
+        "id=" + id +
+        ", avaloqKey=" + avaloqKey +
+        ", name='" + name + '\'' +
+        ", maturityDate=" + maturityDate +
+        ", currencyCode=" + currencyCode +
+        ", impairmentStage=" + impairmentStage +
+        ", counterparty=" + counterparty +
+        '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
-
-    public Position(
-            @NotNull Long avaloqKey,
-            @NotNull @Size(max = 500) String name,
-            @NotNull @Size(max = 3) String currencyCode,
-            LocalDate maturityDate,
-            @NotNull ImpairmentStage impairmentStage,
-            @NotNull Counterparty counterparty) {
-        this.avaloqKey = avaloqKey;
-        this.name = name;
-        this.maturityDate = maturityDate;
-        this.currencyCode = currencyCode;
-        this.impairmentStage = impairmentStage;
-        this.counterparty = counterparty;
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
+    Position position = (Position) o;
+    return Objects.equals(avaloqKey,
+        position.avaloqKey); // && Objects.equals(counterparty.getAvaloqKey(), position.counterparty.getAvaloqKey())?
+  }
 
-    @Override
-    public String toString() {
-        return "Position{" +
-                "id=" + id +
-                ", avaloqKey=" + avaloqKey +
-                ", name='" + name + '\'' +
-                ", maturityDate=" + maturityDate +
-                ", currencyCode=" + currencyCode +
-                ", impairmentStage=" + impairmentStage +
-                ", counterparty=" + counterparty +
-                '}';
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(avaloqKey); // , counterparty.getAvaloqKey());
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Position position = (Position) o;
-        return Objects.equals(avaloqKey, position.avaloqKey); // && Objects.equals(counterparty.getAvaloqKey(), position.counterparty.getAvaloqKey())?
-    }
+  public Long getId() {
+    return id;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(avaloqKey); // , counterparty.getAvaloqKey());
-    }
+  public Long getAvaloqKey() {
+    return avaloqKey;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public Long getAvaloqKey() {
-        return avaloqKey;
-    }
+  public Counterparty getCounterparty() {
+    return counterparty;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public LocalDate getMaturityDate() {
+    return maturityDate;
+  }
 
-    public Counterparty getCounterparty() {
-        return counterparty;
-    }
+  public String getCurrencyCode() {
+    return currencyCode;
+  }
 
-    public LocalDate getMaturityDate() {
-        return maturityDate;
-    }
-
-    public String getCurrencyCode() {
-        return currencyCode;
-    }
-
-    public ImpairmentStage getImpairmentStage() {
-        return impairmentStage;
-    }
+  public ImpairmentStage getImpairmentStage() {
+    return impairmentStage;
+  }
 }

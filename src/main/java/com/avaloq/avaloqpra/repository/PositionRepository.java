@@ -19,12 +19,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PositionRepository extends JpaRepository<Position, Long> {
 
-    List<Position> findByCounterparty(Counterparty counterparty);
+  List<Position> findByCounterparty(Counterparty counterparty);
 
-    // nested properties example
-    List<Position> findByCounterpartyAvaloqKey(Long counterpartyAvaloqKey);
+  // nested properties example
+  List<Position> findByCounterpartyAvaloqKey(Long counterpartyAvaloqKey);
 
-    List<Position> findByAvaloqKey(Long avaloqKey);
+  List<Position> findByAvaloqKey(Long avaloqKey);
 
-    Integer countDistinctByCounterparty(Counterparty counterparty);
+  Integer countDistinctByCounterparty(Counterparty counterparty);
 }

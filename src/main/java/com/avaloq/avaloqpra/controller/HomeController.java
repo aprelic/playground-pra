@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HomeController {
+
   private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
   private int counter = 0;
 
-  @RequestMapping(value="/", method= RequestMethod.GET)
+  @RequestMapping(value = "/", method = RequestMethod.GET)
   public String processHomeRequest() {
     logger.info("Get home request for processing {}", ++counter);
     return "Home Request was processed!";
