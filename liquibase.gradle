@@ -1,0 +1,86 @@
+configurations {
+    liquibase
+}
+
+dependencies {
+    liquibase group: 'org.liquibase.ext', name: 'liquibase-hibernate5', version: 3.6
+}
+
+String date = new Date().format("yyyy-MM-dd")
+String changeLogFolder = "$projectDir/src/main/resources/db/changelog"
+String initialSchema = "$changeLogFolder/v1_0/$date--01-initial-schema.xml"
+String masterChangeLogPath = "$changeLogFolder/db.changelog-master.xml"
+
+def createChangeLogFiles = {
+    def masterChangeLogFile = new File(masterChangeLogPath)
+    masterChangeLogFile.write '<databaseChangeLog\n' +
+            '  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"\n' +
+            '  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n' +
+            '  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog\n' +
+            '                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">\n' +
+            '\n' +
+            '  <include file="v1_0/db.changelog-1.0.xml" relativeToChangelogFile="true"/>\n' +
+            '\n' +
+            '</databaseChangeLog>'
+
+    def firstChangeLog = new File("$changeLogFolder/v1_0/db.changelog-1.0.xml")
+    firstChangeLog.write "<databaseChangeLog\n" +
+            "  xmlns=\"http://www.liquibase.org/xml/ns/dbchangelog\"\n" +
+            "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
+            "  xsi:schemaLocation=\"http://www.liquibase.org/xml/ns/dbchangelog\n" +
+            "                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd\">\n" +
+            "\n" +
+            "  <include file=\"$date--01-initial-schema.xml\" relativeToChangelogFile=\"true\"/>\n" +
+            "\n" +
+            "</databaseChangeLog>"
+}
+
+def replaceDataTypes = {
+    def map = [
+            'type="IDENTITY'              : 'type="BIGINT',
+            'type="VARCHAR_IGNORECASE\\("': 'type="VARCHAR2\\(',
+            'type="VARCHAR_IGNORECASE"'   : 'type="VARCHAR2(255)"'
+    ]
+
+    String tempFile = "$changeLogFolder/v1_0/temp.xml"
+    new File(tempFile).createNewFile()
+
+    new File(tempFile).withWriter { out ->
+        new File(initialSchema).eachLine { line ->
+            map.each { k, v -> line = line.replaceAll(k, v) }
+            out.writeLine(line)
+        }
+    }
+
+    new File(initialSchema).delete()
+    new File(tempFile).renameTo(new File(initialSchema))
+}
+
+task liquibaseGenerateChangeLog(type: JavaExec) {
+    group 'liquibase'
+    description 'Generates initial Liquibase schema from existing database'
+
+    doFirst {
+        if (new File(masterChangeLogPath).exists()) {
+            throw new GradleException("$masterChangeLogPath already exists!")
+        }
+
+        classpath sourceSets.main.runtimeClasspath
+        classpath configurations.liquibase
+        main = "liquibase.integration.commandline.Main"
+
+        new File("$changeLogFolder/v1_0").mkdirs()
+
+        args "--changeLogFile=" + initialSchema
+        args "--url=$url"
+        args "--username=$u"
+        args "--password=$p"
+
+        args "generateChangeLog"
+    }
+
+    doLast {
+        replaceDataTypes()
+        createChangeLogFiles()
+    }
+}

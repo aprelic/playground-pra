@@ -1,0 +1,65 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+  <changeSet author="aprelic (generated)" id="1529136008432-1">
+    <createSequence sequenceName="HIBERNATE_SEQUENCE"/>
+  </changeSet>
+  <changeSet author="aprelic (generated)" id="1529136008432-2">
+    <createTable tableName="COUNTERPARTY">
+      <column name="ID" type="DECIMAL(19)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="AVALOQ_KEY" type="DECIMAL(19)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="NAME" type="VARCHAR(500)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SYMBOLIC_KEY" type="VARCHAR(100)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="aprelic (generated)" id="1529136008432-3">
+    <createTable tableName="POSITION">
+      <column name="ID" type="DECIMAL(19)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="AVALOQ_KEY" type="DECIMAL(19)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="CURRENCY_CODE" type="VARCHAR(3)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="IMPAIRMENT_STAGE" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="MATURITY_DATE" type="date"/>
+      <column name="NAME" type="VARCHAR(500)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="COUNTERPARTY_ID" type="DECIMAL(19)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="aprelic (generated)" id="1529136008432-4">
+    <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_2" tableName="COUNTERPARTY"/>
+  </changeSet>
+  <changeSet author="aprelic (generated)" id="1529136008432-5">
+    <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_5" tableName="POSITION"/>
+  </changeSet>
+  <changeSet author="aprelic (generated)" id="1529136008432-6">
+    <createIndex indexName="FKN4MV5RYVOWXRORWRGMMA5FC0P_INDEX_5" tableName="POSITION">
+      <column name="COUNTERPARTY_ID"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="aprelic (generated)" id="1529136008432-7">
+    <addForeignKeyConstraint baseColumnNames="COUNTERPARTY_ID" baseTableName="POSITION"
+      constraintName="FKN4MV5RYVOWXRORWRGMMA5FC0P" deferrable="false" initiallyDeferred="false"
+      onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+      referencedTableName="COUNTERPARTY"/>
+  </changeSet>
+</databaseChangeLog>
