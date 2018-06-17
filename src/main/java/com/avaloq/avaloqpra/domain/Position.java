@@ -44,7 +44,7 @@ public class Position {
   // not really sure we want to use these @Enumerated,
   // one cannot use FK's to ensure only correct values ae used
   // columns take more space
-  // more effort for migrations, values in the dbinit mst be kept in sync with the code
+  // more effort for migrations, values in the database mst be kept in sync with the code
   @NotNull
   @Enumerated(EnumType.STRING)
   private ImpairmentStage impairmentStage;
