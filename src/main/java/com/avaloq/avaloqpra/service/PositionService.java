@@ -69,7 +69,7 @@ public class PositionService {
   }
 
   public List<Position> findByCounterpartyAvaloqKey(Long counterpartyAvaloqKey) {
-    return positionRepository.findByCounterpartyAvaloqKey(counterpartyAvaloqKey);
+    return positionRepository.findByCounterpartyExternalId(counterpartyAvaloqKey);
   }
 
   public List<Position> findByCounterparty(Counterparty counterparty) {

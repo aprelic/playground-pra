@@ -22,9 +22,9 @@ public interface PositionRepository extends JpaRepository<Position, Long> {
   List<Position> findByCounterparty(Counterparty counterparty);
 
   // nested properties example
-  List<Position> findByCounterpartyAvaloqKey(Long counterpartyAvaloqKey);
+  List<Position> findByCounterpartyExternalId(Long counterpartyExternalId);
 
-  List<Position> findByAvaloqKey(Long avaloqKey);
+  List<Position> findByExternalId(Long externalId);
 
   Integer countDistinctByCounterparty(Counterparty counterparty);
 }

@@ -36,7 +36,7 @@ public class PositionServiceTests {
     assertThat(positions.size(), equalTo(1));
 
     Position position = positions.get(0);
-    assertThat(position.getAvaloqKey(), equalTo(2001L));
+    assertThat(position.getExternalId(), equalTo(2001L));
     assertThat(position.getImpairmentStage(), equalTo(ImpairmentStage.STAGE_2));
     assertThat(position.getMaturityDate(), equalTo(LocalDate.of(2020, Month.NOVEMBER, 15)));
   }

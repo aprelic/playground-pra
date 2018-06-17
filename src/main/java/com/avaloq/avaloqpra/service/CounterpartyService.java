@@ -16,7 +16,7 @@ public class CounterpartyService {
   }
 
   public List<Counterparty> findCounterpartyByAvaloqKey(Long key) {
-    return counterpartyRepository.findByAvaloqKey(key);
+    return counterpartyRepository.findByExternalId(key);
   }
 
 }

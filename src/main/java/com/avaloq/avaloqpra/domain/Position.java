@@ -17,19 +17,19 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-//@Table(name = "PRA_ECL_POS")
+@Table(name = "POS")
 public class Position {
 
   @Id
   @NotNull
-  @GeneratedValue
-  //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pra_ecl_pos_seq") // sequence must manually generated
-  //@SequenceGenerator(name = "pra_ecl_pos_seq", sequenceName = "pra_ecl_pos_seq", allocationSize = 100) // dflt value is 50
+  //@GeneratedValue
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pos_id_seq")
+  @SequenceGenerator(name = "pos_id_seq", sequenceName = "pos_id_seq", allocationSize = 100)
   private Long id;
 
   @NotNull
-  //@Column(name = "avq_key")
-  private Long avaloqKey;
+  //@Column(name = "extl_id")
+  private Long externalId;
 
   @NotNull
   @Size(max = 500)
@@ -44,7 +44,7 @@ public class Position {
   // not really sure we want to use these @Enumerated,
   // one cannot use FK's to ensure only correct values ae used
   // columns take more space
-  // more effort for migrations, values in the database mst be kept in sync with the code
+  // more effort for migrations, values in the dbinit mst be kept in sync with the code
   @NotNull
   @Enumerated(EnumType.STRING)
   private ImpairmentStage impairmentStage;
@@ -58,13 +58,13 @@ public class Position {
   }
 
   public Position(
-      @NotNull Long avaloqKey,
+      @NotNull Long externalId,
       @NotNull @Size(max = 500) String name,
       @NotNull @Size(max = 3) String currencyCode,
       LocalDate maturityDate,
       @NotNull ImpairmentStage impairmentStage,
       @NotNull Counterparty counterparty) {
-    this.avaloqKey = avaloqKey;
+    this.externalId = externalId;
     this.name = name;
     this.maturityDate = maturityDate;
     this.currencyCode = currencyCode;
@@ -76,7 +76,7 @@ public class Position {
   public String toString() {
     return "Position{" +
         "id=" + id +
-        ", avaloqKey=" + avaloqKey +
+        ", externalId=" + externalId +
         ", name='" + name + '\'' +
         ", maturityDate=" + maturityDate +
         ", currencyCode=" + currencyCode +
@@ -94,21 +94,21 @@ public class Position {
       return false;
     }
     Position position = (Position) o;
-    return Objects.equals(avaloqKey,
-        position.avaloqKey); // && Objects.equals(counterparty.getAvaloqKey(), position.counterparty.getAvaloqKey())?
+    return Objects.equals(externalId,
+        position.externalId); // && Objects.equals(counterparty.getExternalId(), position.counterparty.getExternalId())?
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(avaloqKey); // , counterparty.getAvaloqKey());
+    return Objects.hash(externalId); // , counterparty.getExternalId());
   }
 
   public Long getId() {
     return id;
   }
 
-  public Long getAvaloqKey() {
-    return avaloqKey;
+  public Long getExternalId() {
+    return externalId;
   }
 
   public String getName() {

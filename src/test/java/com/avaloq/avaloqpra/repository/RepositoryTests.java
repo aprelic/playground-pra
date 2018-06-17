@@ -45,7 +45,7 @@ public class RepositoryTests {
     Counterparty counterparty = new Counterparty(100L, "CNTPRTY.100", "Counterparty 100");
 
     counterpartyRepository.save(counterparty);
-    assertThat(counterpartyRepository.findByAvaloqKey(100L).get(0).getName())
+    assertThat(counterpartyRepository.findByExternalId(100L).get(0).getName())
         .isEqualTo("Counterparty 100");
     assertThat(counterpartyRepository.findBySymbolicKey("CNTPRTY.100").get(0).getName())
         .isEqualTo("Counterparty 100");
@@ -55,7 +55,7 @@ public class RepositoryTests {
     Position position = new Position(200L, "Position 200 in 100", "CHF",
         LocalDate.of(2030, Month.APRIL, 10), ImpairmentStage.STAGE_1, counterparty);
     positionRepository.save(position);
-    assertThat(positionRepository.findByAvaloqKey(200L).get(0).getName())
+    assertThat(positionRepository.findByExternalId(200L).get(0).getName())
         .isEqualTo("Position 200 in 100");
 
     Position anotherPosition = new Position(201L, "Position 201 in 100", "EUR",

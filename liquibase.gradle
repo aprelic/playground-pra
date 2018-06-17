@@ -58,7 +58,7 @@ def replaceDataTypes = {
 
 task liquibaseGenerateChangeLog(type: JavaExec) {
     group 'liquibase'
-    description 'Generates initial Liquibase schema from existing database'
+    description 'Generates initial Liquibase schema from existing dbinit'
 
     doFirst {
         if (new File(masterChangeLogPath).exists()) {
