@@ -10,7 +10,10 @@
 
 package com.avaloq.avaloqpra.domain;
 
+import com.avaloq.avaloqpra.converter.BigDecimalListConverter;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -53,6 +56,17 @@ public class Position {
   @ManyToOne//(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
   @JoinColumn(name = "counterparty_id")
   private Counterparty counterparty;
+
+  @Convert(converter = BigDecimalListConverter.class)
+  private List<BigDecimal> pdVector;
+
+  public List<BigDecimal> getPdVector() {
+    return pdVector;
+  }
+
+  public void setPdVector(List<BigDecimal> pdVector) {
+    this.pdVector = pdVector;
+  }
 
   protected Position() { // JPA
   }

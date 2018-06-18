@@ -5,6 +5,8 @@ import com.avaloq.avaloqpra.domain.ImpairmentStage;
 import com.avaloq.avaloqpra.domain.Position;
 import com.avaloq.avaloqpra.repository.CounterpartyRepository;
 import com.avaloq.avaloqpra.repository.PositionRepository;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,11 @@ public class PositionService {
             , LocalDate.of(2020, Month.NOVEMBER, 15)
             , ImpairmentStage.STAGE_2
             , counterparty);
+        List<BigDecimal> pdVector = new ArrayList<BigDecimal>();
+        pdVector.add(BigDecimal.ONE);
+        pdVector.add(BigDecimal.ZERO);
+        pdVector.add(BigDecimal.TEN);
+        position.setPdVector(pdVector);
         counterpartyRepository.save(counterparty);
         positionRepository.save(position);
 
