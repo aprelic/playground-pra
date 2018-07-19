@@ -10,21 +10,25 @@
 
 package com.avaloq.avaloqpra.controller;
 
+import com.avaloq.avaloqpra.aspect.LogExecTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+@Component
 @RestController
 public class HomeController {
 
-  private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+  private static final Logger log = LoggerFactory.getLogger(HomeController.class);
   private int counter = 0;
 
-  @RequestMapping(value = "/", method = RequestMethod.GET)
+  @RequestMapping(value = "/home", method = RequestMethod.GET)
+  @LogExecTime
   public String processHomeRequest() {
-    logger.info("Get home request for processing {}", ++counter);
+    log.debug("Get home request for processing {}", ++counter);
     return "Home Request was processed!";
   }
 
