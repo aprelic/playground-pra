@@ -54,7 +54,7 @@ public class Position {
 
   @NotNull
   @ManyToOne//(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-  @JoinColumn(name = "counterparty_id")
+  @JoinColumn(name = "cntprty_id")
   private Counterparty counterparty;
 
   @Convert(converter = BigDecimalListConverter.class)

@@ -1,1 +1,1 @@
-// remember to setup if file is to be used: spring.jpa.hibernate.ddl-auto=none
+// remember to setup if this file is to be used: spring.jpa.hibernate.ddl-auto=none
